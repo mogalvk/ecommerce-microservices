@@ -1,0 +1,21 @@
+services:
+  catalog-db:
+    image: mysql:8.4
+    environment: {MYSQL_DATABASE: catalog, MYSQL_USER: portfolio, MYSQL_PASSWORD: portfolio-local-only, MYSQL_ROOT_PASSWORD: root-local-only}
+    ports: ["3310:3306"]
+    healthcheck: {test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot-local-only"], interval: 5s, timeout: 3s, retries: 20}
+  order-db:
+    image: mysql:8.4
+    environment: {MYSQL_DATABASE: orderdb, MYSQL_USER: portfolio, MYSQL_PASSWORD: portfolio-local-only, MYSQL_ROOT_PASSWORD: root-local-only}
+    ports: ["3311:3306"]
+    healthcheck: {test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot-local-only"], interval: 5s, timeout: 3s, retries: 20}
+  catalog-service:
+    build: ./catalog-service
+    environment: {DB_URL: jdbc:mysql://catalog-db:3306/catalog?serverTimezone=UTC, DB_USER: portfolio, DB_PASSWORD: portfolio-local-only}
+    ports: ["8082:8082"]
+    depends_on: {catalog-db: {condition: service_healthy}}
+  order-service:
+    build: ./order-service
+    environment: {DB_URL: jdbc:mysql://order-db:3306/orderdb?serverTimezone=UTC, DB_USER: portfolio, DB_PASSWORD: portfolio-local-only}
+    ports: ["8084:8084"]
+    depends_on: {order-db: {condition: service_healthy}}

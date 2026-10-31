@@ -1,0 +1,1 @@
+package com.portfolio.catalogservice.repo; import com.portfolio.catalogservice.domain.Product; import org.springframework.data.jpa.repository.JpaRepository; public interface ProductRepository extends JpaRepository<Product,Long>{boolean existsBySkuIgnoreCase(String sku);}

@@ -1,0 +1,1 @@
+package com.portfolio.orderservice.api; import jakarta.validation.constraints.*; import java.math.BigDecimal; public record CustomerOrderRequest(@NotNull @Positive Long productId, @NotNull @Min(1) @Max(10000) Integer quantity, @NotBlank @Email String customerEmail){}

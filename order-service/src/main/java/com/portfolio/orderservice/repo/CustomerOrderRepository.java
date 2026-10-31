@@ -1,0 +1,1 @@
+package com.portfolio.orderservice.repo; import com.portfolio.orderservice.domain.CustomerOrder; import org.springframework.data.jpa.repository.JpaRepository; public interface CustomerOrderRepository extends JpaRepository<CustomerOrder,Long>{}
